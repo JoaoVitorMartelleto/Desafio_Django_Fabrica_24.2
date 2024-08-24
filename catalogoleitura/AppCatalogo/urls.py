@@ -4,16 +4,16 @@ from . import views
 app_name = 'livros'
 
 urlpatterns = [
-    path('', views.listarLivros, name='listarLivros'),
-    path('adicionar/manual/', views.criarLivro, name='criarLivro'),
-    path('adicionar/api/', views.adicionarLivroComApi, name='adicionarLivroComApi'),  
-    path('<str:isbn>/', views.detalharLivro, name='detalharLivro'),
-    path('<str:isbn>/editar/', views.editarLivro, name='editarLivro'),
-    path('<str:isbn>/excluir/', views.excluirLivro, name='excluirLivro'),
+    path('template/livros/', views.listarLivros, name='listarLivros'),
+    path('template/livros/formLivro.html', views.criarLivro, name='criarLivro'),
+    path('template/livros/formLivroComApi.html', views.adicionarLivroComApi, name='adicionarLivroComApi'),  
+    path('template/livros/<str:isbn>', views.detalharLivro, name='detalharLivro'),
+    path('template/livros/editar/<str:isbn>/', views.editarLivro, name='editarLivro'),
+    path('template/livros/excluir/<str:isbn>/', views.excluirLivro, name='excluirLivro'),
 
-    path('usuarios/', views.listaUser, name='listaUser'),
-    path('usuarios/<int:usuarioId>/', views.detalharUser, name='detalharUser'),
-    path('usuarios/criar/', views.criarUser, name='criarUser'),
-    path('usuarios/<int:usuarioId>/editar/', views.editarUser, name='editarUser'),
-    path('usuarios/<int:usuarioId>/excluir/', views.excluirUser, name='excluirUser'),
+    path('template/usuarios/listar/', views.listaUser, name='listaUser'),
+    path('template/usuarios/<int:usuarioId>/', views.detalharUser, name='detalharUser'),
+    path('template/usuarios/criar/', views.criarUser, name='criarUser'),
+    path('template/usuarios/<int:usuarioId>/editar/', views.editarUser, name='editarUser'),
+    path('template/usuarios/<int:usuarioId>/excluir/', views.excluirUser, name='excluirUser'),
 ]

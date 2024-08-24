@@ -6,7 +6,11 @@ import requests
 
 def listarLivros(request):
     livros = Livro.objects.all()
-    return render(request, 'livros/listarLivros.html', {'livros': livros})
+    if not livros:  
+        livros = None  
+
+    return render(request, 'livros/listarLivro.html', {'livros': livros})
+
 
 def detalharLivro(request, isbn):
     livro = get_object_or_404(Livro, isbn=isbn)
@@ -46,7 +50,6 @@ def adicionarLivroComApi(request):
         if form.is_valid():
             isbn = form.cleaned_data['isbn']
             
-            # Obter detalhes do livro da API
             url = f"https://openlibrary.org/api/books?bibkeys=ISBN:{isbn}&format=json&jscmd=data"
             response = requests.get(url)
             
@@ -54,8 +57,7 @@ def adicionarLivroComApi(request):
                 data = response.json()
                 if f"ISBN:{isbn}" in data:
                     detalhes = data[f"ISBN:{isbn}"]
-                    
-                    # Criar e salvar o livro no banco de dados
+                
                     livro = Livro(
                         titulo=detalhes.get('title', ''),
                         autor=detalhes.get('authors', [{}])[0].get('name', ''),
@@ -73,7 +75,6 @@ def adicionarLivroComApi(request):
         form = LivroAPIForm()
     
     return render(request, 'livros/formLivroComApi.html', {'form': form})
-
 
 def listaUser(request):
     usuarios = Usuario.objects.all()

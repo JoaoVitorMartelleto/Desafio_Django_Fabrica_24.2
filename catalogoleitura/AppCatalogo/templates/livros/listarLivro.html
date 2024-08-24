@@ -6,6 +6,7 @@
 </head>
 <body>
     <h1>Listagem de Livros</h1>
+    {% if livros %}
     <ul>
         {% for livro in livros %}
             <li>
@@ -18,7 +19,11 @@
             </li>
         {% endfor %}
     </ul>
+    {% else %}
+    <p>Nenhum livro cadastrado.</p>
+    {% endif %}
     <a href="{% url 'livros:criarLivro' %}">Adicionar Livro Manualmente</a>
     <a href="{% url 'livros:adicionarLivroComApi' %}">Adicionar Livro via API</a>
+
 </body>
 </html>

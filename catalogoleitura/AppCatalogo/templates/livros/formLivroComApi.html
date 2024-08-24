@@ -8,7 +8,7 @@
     <h1>Adicionar Livro via API</h1>
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
+        {{ form.isbn.label_tag }}: {{ form.isbn }}
         <button type="submit">Buscar e Adicionar</button>
         {% if form.errors %}
             <ul>
@@ -23,3 +23,4 @@
     <a href="{% url 'livros:listarLivros' %}">Cancelar</a>
 </body>
 </html>
+
