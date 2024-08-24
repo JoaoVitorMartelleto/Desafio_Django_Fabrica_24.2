@@ -1,0 +1,22 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalhes do Livro</title>
+</head>
+<body>
+    <h1>Detalhes do Livro</h1>
+    <p><strong>Título:</strong> {{ livro.titulo }}</p>
+    <p><strong>Autor:</strong> {{ livro.autor }}</p>
+    <p><strong>ISBN:</strong> {{ livro.isbn }}</p>
+    <p><strong>Descrição:</strong> {{ livro.descricao }}</p>
+    <p><strong>Data de Publicação:</strong> {{ livro.data_publi }}</p>
+    <a href="{% url 'livros:listarLivros' %}">Voltar para a lista de livros</a>
+    <a href="{% url 'livros:editarLivro' isbn=livro.isbn %}">Editar Livro</a>
+    <form action="{% url 'livros:excluirLivro' isbn=livro.isbn %}" method="post">
+        {% csrf_token %}
+        <button type="submit">Excluir Livro</button>
+    </form>
+</body>
+</html>

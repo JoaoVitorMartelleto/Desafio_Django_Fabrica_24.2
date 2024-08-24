@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Listar Livros</title>
+</head>
+<body>
+    <h1>Listagem de Livros</h1>
+    <ul>
+        {% for livro in livros %}
+            <li>
+                <a href="{% url 'livros:detalharLivro' isbn=livro.isbn %}">{{ livro.titulo }}</a>
+                - {{ livro.autor }}
+                <form action="{% url 'livros:excluirLivro' isbn=livro.isbn %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit">Excluir</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'livros:criarLivro' %}">Adicionar Livro Manualmente</a>
+    <a href="{% url 'livros:adicionarLivroComApi' %}">Adicionar Livro via API</a>
+</body>
+</html>

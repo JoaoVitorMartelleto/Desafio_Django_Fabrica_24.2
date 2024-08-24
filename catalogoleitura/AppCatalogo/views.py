@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Livro, Usuario
 from .forms import LivroForm, UsuarioForm, LivroAPIForm
-from .api import obter_detalhes_livro
+import requests
 
 
 def listarLivros(request):
@@ -45,22 +45,33 @@ def adicionarLivroComApi(request):
         form = LivroAPIForm(request.POST)
         if form.is_valid():
             isbn = form.cleaned_data['isbn']
-            dados_livro = obter_detalhes_livro(isbn)
-
-            if not dados_livro:
-                form.add_error('isbn', 'Livro não encontrado ou erro ao acessar a API.')
+            
+            # Obter detalhes do livro da API
+            url = f"https://openlibrary.org/api/books?bibkeys=ISBN:{isbn}&format=json&jscmd=data"
+            response = requests.get(url)
+            
+            if response.status_code == 200:
+                data = response.json()
+                if f"ISBN:{isbn}" in data:
+                    detalhes = data[f"ISBN:{isbn}"]
+                    
+                    # Criar e salvar o livro no banco de dados
+                    livro = Livro(
+                        titulo=detalhes.get('title', ''),
+                        autor=detalhes.get('authors', [{}])[0].get('name', ''),
+                        isbn=isbn,
+                        descricao=detalhes.get('description', ''),
+                        data_publi=detalhes.get('publish_date', None)
+                    )
+                    livro.save()
+                    return redirect('livros:listarLivros')
+                else:
+                    form.add_error('isbn', 'Detalhes do livro não encontrados na API.')
             else:
-                livro = Livro(
-                    titulo=dados_livro.get('title', ''),
-                    autor=dados_livro.get('authors', [{}])[0].get('name', ''),
-                    isbn=isbn,
-                    descricao=dados_livro.get('description', ''),
-                    data_publi=dados_livro.get('publish_date', None)
-                )
-                livro.save()
-                return redirect('livros:listarLivros')
+                form.add_error('isbn', 'Erro ao acessar a API do Open Library.')
     else:
         form = LivroAPIForm()
+    
     return render(request, 'livros/formLivroComApi.html', {'form': form})
 
 

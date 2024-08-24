@@ -11,12 +11,12 @@ class Livro(models.Model):
     
     def __str__(self):
         return self.titulo
-    
-    
-class Usuario (models.Model):
+
+
+class Usuario(models.Model):
     usuario = models.CharField(max_length=100)
     email = models.EmailField(max_length=200)
-    livro = models.ForeignKey(Livro,  on_delete=models.CASCADE)
- 
+    livro = models.ForeignKey('Livro', on_delete=models.CASCADE)  
+    
     def __str__(self):
-        return self.nome   
+        return self.usuario

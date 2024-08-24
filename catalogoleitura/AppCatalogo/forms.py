@@ -10,4 +10,9 @@ class LivroForm(forms.ModelForm):
 class UsuarioForm(forms.ModelForm):
     class Meta:
         model = Usuario
-        fields = ['usuario', 'email', 'titulo']
+        fields = ['usuario', 'email', 'livro']
+        
+class LivroAPIForm(forms.ModelForm):
+    class Meta:
+        model = Livro
+        fields = '__all__'
