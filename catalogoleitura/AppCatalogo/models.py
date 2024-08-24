@@ -4,7 +4,7 @@ class Livro(models.Model):
     titulo = models.CharField(max_length=200)
     autor = models.CharField(max_length=100)
     isbn = models.CharField(max_length=13, unique=True)
-    data_publi = models.DateField()
+    data_publi = models.CharField(max_length=20)
     lido = models.BooleanField(default=False)
     nota = models.FloatField(null=True, blank=True)
     comentarios = models.TextField(null=True, blank=True)

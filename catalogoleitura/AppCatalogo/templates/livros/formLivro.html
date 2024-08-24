@@ -3,6 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <title>Formulário de Livro</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        .error-list {
+            color: red;
+        }
+        .error-list li {
+            margin-bottom: 5px;
+        }
+    </style>
 </head>
 <body>
     <h1>{% if form.instance.pk %}Editar Livro{% else %}Adicionar Livro{% endif %}</h1>

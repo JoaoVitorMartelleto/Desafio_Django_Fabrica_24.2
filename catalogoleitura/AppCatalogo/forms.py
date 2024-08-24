@@ -12,7 +12,9 @@ class UsuarioForm(forms.ModelForm):
         model = Usuario
         fields = ['usuario', 'email', 'livro']
         
-class LivroAPIForm(forms.ModelForm):
-    class Meta:
-        model = Livro
-        fields = '__all__'
+class LivroAPIForm(forms.Form):
+    isbn = forms.CharField(
+        max_length=13,
+        required=True,
+        widget=forms.TextInput(attrs={'placeholder': 'Digite o ISBN'})
+    )

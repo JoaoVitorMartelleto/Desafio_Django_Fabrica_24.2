@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Livro, Usuario
 from .forms import LivroForm, UsuarioForm, LivroAPIForm
 import requests
-
+from datetime import datetime
 
 def listarLivros(request):
     livros = Livro.objects.all()
@@ -55,15 +55,34 @@ def adicionarLivroComApi(request):
             
             if response.status_code == 200:
                 data = response.json()
+                
                 if f"ISBN:{isbn}" in data:
                     detalhes = data[f"ISBN:{isbn}"]
-                
+                    
+                    titulo = detalhes.get('title', 'Título não disponível')
+                    autores = detalhes.get('authors', [])
+                    autor = ', '.join(author.get('name', 'Autor desconhecido') for author in autores)
+                    
+
+                    data_publi_raw = detalhes.get('publish_date', None)
+                    if data_publi_raw:
+                        try:
+                            datetime.strptime(data_publi_raw, '%Y-%m-%d')
+                            data_publi = datetime.strptime(data_publi_raw, '%Y-%m-%d').strftime('%d/%m/%Y')
+                        except ValueError:
+                            try:
+                                datetime.strptime(data_publi_raw, '%Y-%m')
+                                data_publi = datetime.strptime(data_publi_raw, '%Y-%m').strftime('%m/%Y')
+                            except ValueError:
+                                data_publi = 'Data de publicação não disponível'
+                    else:
+                        data_publi = 'Data de publicação não disponível'
+                    
                     livro = Livro(
-                        titulo=detalhes.get('title', ''),
-                        autor=detalhes.get('authors', [{}])[0].get('name', ''),
+                        titulo=titulo,
+                        autor=autor,
                         isbn=isbn,
-                        descricao=detalhes.get('description', ''),
-                        data_publi=detalhes.get('publish_date', None)
+                        data_publi=data_publi
                     )
                     livro.save()
                     return redirect('livros:listarLivros')
