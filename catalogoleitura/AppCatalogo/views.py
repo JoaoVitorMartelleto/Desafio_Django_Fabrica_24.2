@@ -1,78 +1,101 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Livro
-from .forms import LivroForm
-from .forms import UsuarioForm
-from .models import Usuario
+from .models import Livro, Usuario
+from .forms import LivroForm, UsuarioForm, LivroAPIForm
+from .api import obter_detalhes_livro
 
-def listar_livros(request):
+
+def listarLivros(request):
     livros = Livro.objects.all()
-    return render(request, 'livros/listar_livros.html', {'livros': livros})
+    return render(request, 'livros/listarLivros.html', {'livros': livros})
 
-def detalhar_livro(request, livro_id):
-    livro = get_object_or_404(Livro, isbn = isbn)
-    return render(request, 'livros/detalhar_livro.html', {'livro': livro})
+def detalharLivro(request, isbn):
+    livro = get_object_or_404(Livro, isbn=isbn)
+    return render(request, 'livros/detalharLivro.html', {'livro': livro})
 
-def criar_livro(request):
+def criarLivro(request):
     if request.method == 'POST':
         form = LivroForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('listar_livros')
+            return redirect('livros:listarLivros')
     else:
         form = LivroForm()
-    return render(request, 'livros/form_livro.html', {'form': form})
+    return render(request, 'livros/formLivro.html', {'form': form})
 
-def editar_livro(request, livro_id):
-    livro = get_object_or_404(Livro, id=livro_id)
+def editarLivro(request, isbn):
+    livro = get_object_or_404(Livro, isbn=isbn)
     if request.method == 'POST':
         form = LivroForm(request.POST, instance=livro)
         if form.is_valid():
             form.save()
-            return redirect('listar_livros')
+            return redirect('livros:listarLivros')
     else:
         form = LivroForm(instance=livro)
-    return render(request, 'livros/form_livro.html', {'form': form})
+    return render(request, 'livros/formLivro.html', {'form': form})
 
-def excluir_livro(request, livro_id):
-    livro = get_object_or_404(Livro, id=livro_id)
+def excluirLivro(request, isbn):
+    livro = get_object_or_404(Livro, isbn=isbn)
     if request.method == 'POST':
         livro.delete()
-        return redirect('listar_livros')
-    return render(request, 'livros/confirmar_exclusao.html', {'livro': livro})
+        return redirect('livros:listarLivros')
+    return render(request, 'livros/confirmarExclusao.html', {'livro': livro})
 
-def listar_usuarios(request):
+def adicionarLivroComApi(request):
+    if request.method == 'POST':
+        form = LivroAPIForm(request.POST)
+        if form.is_valid():
+            isbn = form.cleaned_data['isbn']
+            dados_livro = obter_detalhes_livro(isbn)
+
+            if not dados_livro:
+                form.add_error('isbn', 'Livro não encontrado ou erro ao acessar a API.')
+            else:
+                livro = Livro(
+                    titulo=dados_livro.get('title', ''),
+                    autor=dados_livro.get('authors', [{}])[0].get('name', ''),
+                    isbn=isbn,
+                    descricao=dados_livro.get('description', ''),
+                    data_publi=dados_livro.get('publish_date', None)
+                )
+                livro.save()
+                return redirect('livros:listarLivros')
+    else:
+        form = LivroAPIForm()
+    return render(request, 'livros/formLivroComApi.html', {'form': form})
+
+
+def listaUser(request):
     usuarios = Usuario.objects.all()
-    return render(request, 'usuarios/listar_usuarios.html', {'usuarios': usuarios})
+    return render(request, 'usuarios/listaUser.html', {'usuarios': usuarios})
 
-def detalhar_usuario(request, usuario_id):
-    usuario = get_object_or_404(Usuario, id=usuario_id)
-    return render(request, 'usuarios/detalhar_usuario.html', {'usuario': usuario})
+def detalharUser(request, usuarioId):
+    usuario = get_object_or_404(Usuario, id=usuarioId)
+    return render(request, 'usuarios/detalharUser.html', {'usuario': usuario})
 
-def criar_usuario(request):
+def criarUser(request):
     if request.method == 'POST':
         form = UsuarioForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('listar_usuarios')
+            return redirect('usuarios:listaUser')
     else:
         form = UsuarioForm()
-    return render(request, 'usuarios/form_usuario.html', {'form': form})
+    return render(request, 'usuarios/formUser.html', {'form': form})
 
-
-def editar_usuario(request, usuario_id):
-    usuario = get_object_or_404(Usuario, id=usuario_id)
+def editarUser(request, usuarioId):
+    usuario = get_object_or_404(Usuario, id=usuarioId)
     if request.method == 'POST':
         form = UsuarioForm(request.POST, instance=usuario)
         if form.is_valid():
             form.save()
-            return redirect('listar_usuarios')
+            return redirect('usuarios:listaUser')
     else:
         form = UsuarioForm(instance=usuario)
-    return render(request, 'usuarios/form_usuario.html', {'form': form})
+    return render(request, 'usuarios/formUser.html', {'form': form})
 
-def excluir_usuario(request, usuario_id):
-    usuario = get_object_or_404(Usuario, id=usuario_id)
+def excluirUser(request, usuarioId):
+    usuario = get_object_or_404(Usuario, id=usuarioId)
     if request.method == 'POST':
         usuario.delete()
-        return redirect('listar_usuarios')
-    return render(request, 'usuarios/confirmar_exclusao.html', {'usuario': usuario})
+        return redirect('usuarios:listaUser')
+    return render(request, 'usuarios/confirmarExclusao.html', {'usuario': usuario})
