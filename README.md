@@ -8,8 +8,7 @@ Sistema feito para ter controle sobre quais livros você já leu e avaliá-los. 
 - **Controle de Status de Leitura:** Marque livros como "Lido" ou "Não Lido" e filtre sua lista de acordo com o status.
 - **Avaliação de Livros:** Dê uma nota aos livros que você leu e adicione comentários para registrar suas impressões.
 - **Visualização da Lista de Livros:** Veja todos os livros cadastrados em seu catálogo, com destaque para o status de leitura e nota.
-- **Pesquisa e Filtros:** Encontre rapidamente livros por título, autor ou ISBN e filtre a lista por status de leitura ou nota.
-  
+
 ## Estrutura do Projeto
 
 ### Entidades Principais
@@ -36,7 +35,6 @@ Sistema feito para ter controle sobre quais livros você já leu e avaliá-los. 
 - **Avaliação de Livros:** Interface para avaliação e comentários sobre os livros.
 - **Visualização da Lista de Livros:** Exibição e gerenciamento dos livros cadastrados.
 - **Detalhes do Livro:** Página com informações completas sobre o livro.
-- **Pesquisa e Filtros:** Funcionalidades de busca e filtragem para facilitar a navegação.
   
 ### Integração com API Externa
 - **API Gratuita de Livros:** A aplicação utiliza uma API gratuita para consultar informações adicionais sobre os livros, como título, autor, e descrição, facilitando o cadastro e enriquecendo os dados do livro.
@@ -45,7 +43,6 @@ Sistema feito para ter controle sobre quais livros você já leu e avaliá-los. 
 
 - **Django:** Framework utilizado para o desenvolvimento da aplicação.
 - **Django Templates:** Para renderização das páginas HTML.
-- **Bootstrap:** (ou outro framework CSS) para estilização e responsividade.
 
 ## Como Rodar o Projeto
 
