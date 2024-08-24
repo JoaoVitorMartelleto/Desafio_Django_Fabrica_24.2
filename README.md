@@ -9,7 +9,7 @@ Sistema feito para ter controle sobre quais livros você já leu e avaliá-los. 
 - **Avaliação de Livros:** Dê uma nota aos livros que você leu e adicione comentários para registrar suas impressões.
 - **Visualização da Lista de Livros:** Veja todos os livros cadastrados em seu catálogo, com destaque para o status de leitura e nota.
 - **Pesquisa e Filtros:** Encontre rapidamente livros por título, autor ou ISBN e filtre a lista por status de leitura ou nota.
-- 
+  
 ## Estrutura do Projeto
 
 ### Entidades Principais
