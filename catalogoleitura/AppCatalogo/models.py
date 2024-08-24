@@ -16,7 +16,7 @@ class Livro(models.Model):
 class Usuario(models.Model):
     usuario = models.CharField(max_length=100)
     email = models.EmailField(max_length=200)
-    livro = models.ForeignKey('Livro', on_delete=models.CASCADE)  
+    livro = models.ForeignKey(Livro, on_delete=models.SET_NULL, null=True, blank=True)  
     
     def __str__(self):
         return self.usuario

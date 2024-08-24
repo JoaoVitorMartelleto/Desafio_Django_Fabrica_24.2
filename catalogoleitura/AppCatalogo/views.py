@@ -89,9 +89,10 @@ def criarUser(request):
         form = UsuarioForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('usuarios:listaUser')
+            return redirect('listaUser')
     else:
         form = UsuarioForm()
+    
     return render(request, 'usuarios/formUser.html', {'form': form})
 
 def editarUser(request, usuarioId):
@@ -100,7 +101,7 @@ def editarUser(request, usuarioId):
         form = UsuarioForm(request.POST, instance=usuario)
         if form.is_valid():
             form.save()
-            return redirect('usuarios:listaUser')
+            return redirect('listaUser')
     else:
         form = UsuarioForm(instance=usuario)
     return render(request, 'usuarios/formUser.html', {'form': form})
@@ -109,5 +110,5 @@ def excluirUser(request, usuarioId):
     usuario = get_object_or_404(Usuario, id=usuarioId)
     if request.method == 'POST':
         usuario.delete()
-        return redirect('usuarios:listaUser')
+        return redirect('listaUser') 
     return render(request, 'usuarios/confirmarExclusao.html', {'usuario': usuario})
