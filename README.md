@@ -39,7 +39,7 @@ Sistema feito para ter controle sobre quais livros você já leu e avaliá-los. 
 - **Pesquisa e Filtros:** Funcionalidades de busca e filtragem para facilitar a navegação.
   
 ### Integração com API Externa
-- ##API Gratuita de Livros:## A aplicação utiliza uma API gratuita para consultar informações adicionais sobre os livros, como título, autor, e descrição, facilitando o cadastro e enriquecendo os dados do livro.
+- **API Gratuita de Livros:** A aplicação utiliza uma API gratuita para consultar informações adicionais sobre os livros, como título, autor, e descrição, facilitando o cadastro e enriquecendo os dados do livro.
 
 ## Tecnologias Utilizadas
 
